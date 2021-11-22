@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const PORT = process.env.PORT || 3000;
 
 require('dotenv').config();
 
@@ -50,6 +51,6 @@ app.get("/islogin", verifyToken, function (req, res) {
     })
 });
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
     console.log('Server started!');
 })
