@@ -28,6 +28,48 @@ router.post('/', verifyToken, jsonParser, async function (req, res, next) {
     })
 });
 
+router.post('/view', verifyToken, jsonParser, async function (req, res, next) {
+
+    jwt.verify(req.token, process.env.TOKEN_KEY, async (err, authData) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            const _id = authData._id;
+            const user = await Users.findOne({ _id }).exec();
+            const username = user.username;
+            const note_id = req.body._id;
+            const note = await Notes.findOne({ _id: note_id, deleted: false }).exec();
+            const user2 = await Users.findOne({ _id: note.user_id }).exec();
+            
+            if (note) {
+                let data = {
+                    _id: note._id,
+                    username: username,
+                    note_username: user2.username,
+                    title: note.title,
+                    content: note.content,
+                    color: note.color,
+                    privacy: note.privacy,
+                    deleted: note.deleted,
+                    createdAt: note.createdAt,
+                    updatedAt: note.updatedAt,
+                    fav: false
+                }
+                if ((user.fav_notes).indexOf(note._id) !== -1) {
+                    Object.assign(data, { fav: true });
+                }
+                if (username !== user2.username && note.privacy === "private") {
+                    res.send("Not found");
+                } else {
+                    res.send(data);
+                }
+            } else {
+                res.send("Not found");
+            }
+        }
+    })
+});
+
 router.get('/mynotes', verifyToken, jsonParser, async function (req, res, next) {
 
     jwt.verify(req.token, process.env.TOKEN_KEY, async (err, authData) => {
