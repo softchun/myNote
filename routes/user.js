@@ -40,9 +40,13 @@ router.post('/edit', verifyToken, jsonParser, async function (req, res, next) {
             const user2 = await Users.findOne({ username: username_new }).exec();
             
             if (!user) {
-                res.send("Not found");
+                res.status(200).send({
+                    message: 'Not found'
+                });
             } else if (user2 && (username !== username_new)) {
-                res.send("Username already used, please change.");
+                res.status(200).send({
+                    message: 'Username already used, please change.'
+                });
             } else if (username_new != null) {
                 user.username = username_new;
                 user.save();
