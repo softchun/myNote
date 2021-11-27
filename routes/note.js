@@ -252,8 +252,6 @@ router.post('/delete', verifyToken, jsonParser, async function (req, res, next) 
             const note_id = req.body._id;
             const note = await Notes.findOne({_id: note_id}).exec();
 
-            console.log(req.body);
-
             if (!note || _id !== note.user_id) {
                 res.send("Not found");
             }

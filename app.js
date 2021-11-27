@@ -52,5 +52,5 @@ app.get("/islogin", verifyToken, function (req, res) {
 });
 
 app.listen(PORT, () => {
-    console.log('Server started!');
+    console.log('Server started!',PORT);
 })

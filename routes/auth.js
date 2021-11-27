@@ -23,8 +23,6 @@ router.post('/login', jsonParser, async function (req, res) {
     const user = await Users.findOne({ email }).exec();
     if (user) {
         bcrypt.compare(password, user.password, function (err, result) {
-            console.log(result);
-            console.log(user);
             if (result) {
 
                 const payload = {
