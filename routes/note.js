@@ -110,10 +110,12 @@ router.get('/all', verifyToken, jsonParser, async function (req, res, next) {
         if (err) {
             res.sendStatus(403);
         } else {
+            const _id = authData._id;
             const notes = await Notes.find({ deleted: false, privacy: "public" }).exec();
             let list = [];
             for (let note of notes) {
                 const user = await Users.findOne({ _id: note.user_id }).exec();
+                const user2 = await Users.findOne({ _id: _id }).exec();
                 let data = {
                     _id: note._id,
                     username: user.username,
@@ -126,7 +128,7 @@ router.get('/all', verifyToken, jsonParser, async function (req, res, next) {
                     updatedAt: note.updatedAt,
                     fav: false
                 };
-                if ((user.fav_notes).indexOf(note._id) !== -1) {
+                if ((user2.fav_notes).indexOf(note._id) !== -1) {
                     Object.assign(data, { fav: true });
                 }
                 list.push(data);
