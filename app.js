@@ -39,10 +39,6 @@ app.get("/islogin", verifyToken, function (req, res) {
     })
 });
 
-app.listen(PORT, () => {
-    console.log('Server started!',PORT);
-})
-
 const uri = process.env.ATLAS_URI;
 const option = {
     useNewUrlParser: true,
@@ -53,4 +49,9 @@ mongoose.connect(uri, option);
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
+    app.listen(PORT, () => {
+        console.log('Server started!',PORT);
+    })
 })
+
+
