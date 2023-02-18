@@ -10,18 +10,6 @@ const app = express();
 
 app.use(cors())
 
-const uri = process.env.ATLAS_URI;
-const option = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-};
-mongoose.connect(uri, option);
-
-const connection = mongoose.connection;
-connection.once('open', () => {
-    console.log("MongoDB database connection established successfully");
-})
-
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-TypeError, Accept');
@@ -53,4 +41,16 @@ app.get("/islogin", verifyToken, function (req, res) {
 
 app.listen(PORT, () => {
     console.log('Server started!',PORT);
+})
+
+const uri = process.env.ATLAS_URI;
+const option = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
+mongoose.connect(uri, option);
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log("MongoDB database connection established successfully");
 })
